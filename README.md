@@ -1,7 +1,7 @@
 # ifluant
 Interactive Fiction engine in Lua
 
-Currently only supports moving in four cardinal directions, looking, and quitting, but hey, gotta start somewhere.
+Currently only supports moving in four cardinal directions, looking (thanks ICJ for the suggestion!), and quitting, but hey, gotta start somewhere.
 
 ## Running the sample game
 - Install [Lua](https://lua.org)
