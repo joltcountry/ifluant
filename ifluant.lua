@@ -1,3 +1,7 @@
+-- The ifluant Interactive Fiction engine
+--
+-- For question/criticisms, email bparrish99@gmail.com
+
 ifluant = {}
 player = {}
 

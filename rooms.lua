@@ -1,3 +1,17 @@
+-- Here is where you define your rooms.
+-- 
+-- Rooms have a few standard attributes that must be defined for the engine to work properly:
+--
+-- shortdesc: Short description of the room (like you'd see when you move to a room)
+-- desc: Long description (like you'd see when you FIRST move to a room, or type "look"
+-- dirs: List of cardinal directions and what happens when you try to go there.
+--   - If the value of a direction is a string, it will just print that and not move the player.
+--   - If the value is a function, and the function returns a room, it will move the player there.
+--   - If the value is a function, and does NOT return a room, it will not move the player.
+--   - If a direction is not specified, it will output a generic "you can't go there" message.
+--
+-- More to come!
+
 rooms = {
 
     outside = {
