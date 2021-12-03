@@ -1,7 +1,12 @@
 # ifluant
 Interactive Fiction engine in Lua
 
-Currently only supports moving in four cardinal directions, looking (thanks ICJ for the suggestion!), and quitting, but hey, gotta start somewhere.
+Supported:
+- Basic movement
+- Default actions for get, drop, examine, inventory, look
+
+Next:
+- Objects/rooms intercepting verbs
 
 ## Running the sample game
 - Install [Lua](https://lua.org)
