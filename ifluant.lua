@@ -45,7 +45,6 @@ function ifluant.run()
         elseif (line == 'l' or line == 'look') then
             print(bold(player.room.shortdesc))
             print(player.room.desc)
-            goto continue
         elseif (line == 'n' or line == 's' or line == 'e' or line == 'w') then
             dest = player.room.dirs[line]
             if not dest then
@@ -64,8 +63,6 @@ function ifluant.run()
         else
             print("I don't understand the command \"" .. line .. "\".")
         end
-
-        ::continue::
 
     until quit
 
