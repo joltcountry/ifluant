@@ -21,6 +21,9 @@ rooms = {
             n = go('inside'),
             e = "This is really more of a north/south kinda game.",
             w = "This is really more of a north/south kinda game."
+        },
+        holding = {
+            lantern
         }
     },
 
@@ -42,6 +45,9 @@ rooms = {
                     end
                 end,
             n = "This cave isn't very deep, sorry."
+        },
+        holding = {
+            rock
         }
     },
 

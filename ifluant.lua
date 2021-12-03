@@ -2,68 +2,88 @@
 --
 -- For question/criticisms, email bparrish99@gmail.com
 
-ifluant = {}
-player = {}
+Ifluant = {
+    verbs = "Verbs!"
+}
 
-local quit = false
+player = {
+    holding = {}
+}
 
-function bold(s)
-    io.write('\27[1m'..s..'\27[0m')
-end
+require 'ifluant-utils'
+require 'verbs'
 
-function say(s)
-    io.write(s .. '\n\n')
-end
+function Ifluant:new()
 
-function go(room)
-    return function() return rooms[room] end
-end
+    local verbs = initVerbs()
 
-function player.moveTo(_room)
-    player.room = _room
-    player.moved = true
-end
-
-function ifluant.run()
-
-    repeat
-
-        if player.moved then
-            print(bold(player.room.shortdesc))
-            if not player.room.seen then
-                print(player.room.desc)
-                player.room.seen = true
-            end
-            player.moved = false
+    local function parse(line)
+        tokens={}
+        for token in string.gmatch(line, "[^%s]+") do
+            table.insert(tokens, token)
         end
+        -- verb, adj, obj, xadj, xobj
+        return tokens[1], nil, tokens[2], nil, nil
+    end
 
-        io.write('\n> ')
+    local gamestate = {
+        quit = false
+    }
 
-        line = io.read()
-        if (line == 'q' or line == 'quit') then
-            quit = true
-        elseif (line == 'l' or line == 'look') then
-            print(bold(player.room.shortdesc))
-            print(player.room.desc)
-        elseif (line == 'n' or line == 's' or line == 'e' or line == 'w') then
-            dest = player.room.dirs[line]
-            if not dest then
-                print("You can't go that way.")
-            else
-                if (type(dest) == 'string') then
-                    print(dest)
-                elseif (type(dest) == 'function') then
-                    local res = dest()
-                    if (type(res) == 'table') then player.moveTo(res) end
-                else
-                    print("ERROR: invalid room direction type: " .. type(dest))
-                    os.exit();
+    local self = {}
+
+    function self:run()
+
+        repeat
+            ::continue::
+
+            if player.moved then
+                print(bold(player.room.shortdesc))
+                if not player.room.seen then
+                    showRoom(player.room)
+                    player.room.seen = true
+                end
+                showRoomContents(player.room)
+                player.moved = false
+            end
+
+            io.write('\n> ')
+
+            line = io.read()
+            
+            local verb, adj, obj, xadj, xobj = parse(line)
+
+            if not verb then
+                print('Say what now?')
+                goto continue
+            end
+
+            local recognized = false
+
+            for i, v in pairs(verbs) do
+                if (verb == i) then
+                    recognized = true
+                elseif v.synonyms then
+                    for si,sv in pairs(v.synonyms) do
+                        if (verb == sv) then
+                            recognized = true
+                        end
+                    end
+                end
+                if recognized then
+                    v.handler(gamestate, i, adj, obj, xadj, xobj)
+                    break
                 end
             end
-        else
-            print("I don't understand the command \"" .. line .. "\".")
-        end
 
-    until quit
+            if not recognized then
+                print("I don't understand \"" .. verb .. "\".")
+            end
+
+        until gamestate.quit
+
+    end
+
+    return self;
 
 end

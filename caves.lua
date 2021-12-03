@@ -2,8 +2,12 @@
 --
 -- Arguably the greatest, most scintillating three-room cave exploration game ever written in Lua
 
-require 'ifluant'      -- Loads the game engine (required as first line)
+require 'ifluant'       -- Loads the game engine (required as first line)
+require 'items'         -- Items!
 require 'rooms'         -- Defines the rooms in your game
+
+-- Initialize engine
+local ifluant = Ifluant:new()
 
 -- Set up some flags for game logic
 flags = {
@@ -11,10 +15,10 @@ flags = {
 }
 
 -- Set the player's initial location
-player.moveTo(rooms.outside);
+player.moveTo(rooms.outside)
+giveItem(authornote, player)
 
 -- Introductory text and stuff
-
 print "Welcome to the Lua Caves!"
 print ""
 print "This is an exciting, fun adventure for the whole family."
