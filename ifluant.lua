@@ -10,6 +10,10 @@ player = {
     holding = {}
 }
 
+gamestate = {
+    quit = false
+}
+
 require 'ifluant-utils'
 require 'verbs'
 
@@ -25,10 +29,6 @@ function Ifluant:new()
         -- verb, adj, obj, xadj, xobj
         return tokens[1], nil, tokens[2], nil, nil
     end
-
-    local gamestate = {
-        quit = false
-    }
 
     local self = {}
 
@@ -71,7 +71,27 @@ function Ifluant:new()
                     end
                 end
                 if recognized then
-                    v.handler(gamestate, i, adj, obj, xadj, xobj)
+                    -- run hook on anything present
+                    local override = false
+                    
+                    for ik,iv in pairs(player.holding) do
+                        if (iv.hooks and iv.hooks[i]) then
+                            override = iv.hooks[i](adj, obj, xadj, xobj)
+                        end
+                    end
+
+                    if (player.room.holding) then 
+                        for ik,iv in pairs(player.room.holding) do
+                            if (iv.hooks and iv.hooks[i]) then
+                                override = override or iv.hooks[i](adj, obj, xadj, xobj)
+                            end
+                        end
+                    end
+
+                    if not override then
+                        v.handler(i, adj, obj, xadj, xobj)
+                    end
+
                     break
                 end
             end

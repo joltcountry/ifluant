@@ -5,7 +5,7 @@ function itemMatches(item, str)
     return false
 end
 
-function dirHandler(gamestate, v)
+function dirHandler(v)
     local dest = player.room.dirs[v]
     if not dest then
         print("You can't go that way.")
@@ -42,7 +42,7 @@ function initVerbs()
         },
         quit = {
             synonyms = {'q'},
-            handler = function(gamestate)
+            handler = function()
                 gamestate.quit = true
             end
         },
@@ -69,7 +69,7 @@ function initVerbs()
         },
         get = {
             synonyms = {'take'},
-            handler = function(gamestate, verb, adj, obj)
+            handler = function(verb, adj, obj)
                 if player.room.holding then
                     for i,v in pairs(player.room.holding) do
                         if itemMatches(v, obj) then
@@ -83,7 +83,7 @@ function initVerbs()
             end
         },
         drop = {
-            handler = function(gamestate, verb, adj, obj)
+            handler = function(verb, adj, obj)
                 for i,v in pairs(player.holding) do
                     if itemMatches(v, obj) then
                         print('You drop the '..v.name..'.')
@@ -96,7 +96,7 @@ function initVerbs()
         },
         examine = {
             synonyms = { 'x' },
-            handler = function(gamestate, verb, adj, obj)
+            handler = function(verb, adj, obj)
                 local item
                 for i,v in pairs(player.holding) do
                     if itemMatches(v, obj) then

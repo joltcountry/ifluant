@@ -2,7 +2,12 @@ lantern = {
     name = "old rusty lantern",
     article = "an",
     names = { "lantern", "lamp" },
-    desc = "A well-worn copper lantern, just ripe for lighting and carrying, once I implement that."
+    desc = "A well-worn copper lantern, just ripe for lighting and carrying, once I implement that.",
+    hooks = {
+        drop = function()
+            say("After considering it for a few moments...")
+        end
+    }
 }
 
 authornote = {
@@ -13,5 +18,11 @@ authornote = {
 
 rock = {
     name = "rock",
-    names = { "rock", "stone" }
+    names = { "rock", "stone" },
+    hooks = {
+        drop = function()
+            print("It was a cursed rock, you can't drop anything!")
+            return true
+        end
+    }
 }
