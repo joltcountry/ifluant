@@ -23,8 +23,28 @@ function say(s)
     io.write(s .. '\n\n')
 end
 
+-- Shortcut functions
 function go(room)
     return function() return rooms[room] end
+end
+
+function flavor(text)
+    return function() say(text) end
+end
+
+function describe(text)
+    return function() print(text) return false, true end
+end
+
+function perform(o)
+    return function()
+        if type(o) == 'string' then
+            print(o)
+        elseif type(o) == 'function' then
+            o()
+        end
+        return true, true 
+    end
 end
 
 function player.moveTo(_room)
@@ -33,10 +53,7 @@ function player.moveTo(_room)
 end
 
 function giveItem(item, target)
-    if not target.holding then
-        target.holding = {}
-    end
-    table.insert(target.holding, item)
+    table.insert(target.holding, items[item])
 end
 
 function moveItem(item, source, target)
@@ -54,6 +71,16 @@ function moveItem(item, source, target)
     return moved
 end
 
+function findObject(obj)
+    if obj then
+        for k, v in pairs(items) do
+            if itemMatches(v, obj) then
+                return k
+            end
+        end
+    end
+end
+            
 function showRoomContents(room)
     if (room.holding and #room.holding > 0) then
         print("\nYou see:")

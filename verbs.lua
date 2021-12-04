@@ -69,24 +69,32 @@ function initVerbs()
         },
         get = {
             synonyms = {'take'},
-            handler = function(verb, adj, obj)
-                if player.room.holding then
-                    for i,v in pairs(player.room.holding) do
-                        if itemMatches(v, obj) then
+            handler = function(verb, adj, obj, xadj, xobj, overrideText)
+                for i,v in pairs(player.holding) do
+                    if itemMatches(v, obj) then
+                        print("You're already carrying the "..v.name..".")
+                        return
+                    end
+                end
+                for i,v in pairs(player.room.holding) do
+                    if itemMatches(v, obj) then
+                        if (not overrideText) then
                             print('You pick up the '..v.name..'.')
-                            moveItem(v, player.room, player)
-                            return
                         end
+                        moveItem(v, player.room, player)
+                        return
                     end
                 end
                 print("You don't see any " .. obj .. " here.")
             end
         },
         drop = {
-            handler = function(verb, adj, obj)
+            handler = function(verb, adj, obj, xadj, xobj, overrideText)
                 for i,v in pairs(player.holding) do
                     if itemMatches(v, obj) then
-                        print('You drop the '..v.name..'.')
+                        if (not overrideText) then
+                            print('You drop the '..v.name..'.')
+                        end
                         moveItem(v, player, player.room)
                         return
                     end
@@ -118,7 +126,11 @@ function initVerbs()
                     print("You don't see any " .. obj .. " here.")
                 end
             end
-
+        },
+        read = {
+            handler = function()
+                print("You can't read that.")
+            end
         }
     }
     return verbs

@@ -2,9 +2,7 @@
 --
 -- For question/criticisms, email bparrish99@gmail.com
 
-Ifluant = {
-    verbs = "Verbs!"
-}
+Ifluant = {}
 
 player = {
     holding = {}
@@ -13,6 +11,9 @@ player = {
 gamestate = {
     quit = false
 }
+
+rooms = {}
+items = {}
 
 require 'ifluant-utils'
 require 'verbs'
@@ -32,7 +33,23 @@ function Ifluant:new()
 
     local self = {}
 
-    function self:run()
+    function self.item(k, v)
+
+        v.actions = v.actions or {}
+        items[k] = v 
+    
+    end
+    
+    function self.room(k, v)
+
+        v.actions = v.actions or {}
+        v.lighted = true
+        v.holding = v.holding or {}
+        rooms[k] = v
+    
+    end
+    
+    function self.run()
 
         repeat
             ::continue::
@@ -61,6 +78,7 @@ function Ifluant:new()
             local recognized = false
 
             for i, v in pairs(verbs) do
+                
                 if (verb == i) then
                     recognized = true
                 elseif v.synonyms then
@@ -70,30 +88,25 @@ function Ifluant:new()
                         end
                     end
                 end
+                
                 if recognized then
                     -- run hook on anything present
-                    local override = false
+                    local shortcut = false
+                    local overrideText = false
                     
-                    for ik,iv in pairs(player.holding) do
-                        if (iv.hooks and iv.hooks[i]) then
-                            override = iv.hooks[i](adj, obj, xadj, xobj)
-                        end
+                    local objKey = findObject(obj)
+
+                    if (objKey and items[objKey].actions[i]) then
+                        shortcut, overrideText = items[objKey].actions[i](adj, obj, xadj, xobj)
                     end
 
-                    if (player.room.holding) then 
-                        for ik,iv in pairs(player.room.holding) do
-                            if (iv.hooks and iv.hooks[i]) then
-                                override = override or iv.hooks[i](adj, obj, xadj, xobj)
-                            end
-                        end
-                    end
-
-                    if not override then
-                        v.handler(i, adj, obj, xadj, xobj)
+                    if not shortcut then
+                        v.handler(i, adj, obj, xadj, xobj, overrideText)
                     end
 
                     break
                 end
+            
             end
 
             if not recognized then
