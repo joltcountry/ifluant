@@ -31,15 +31,15 @@ ifluant.room('inside', {
     dirs = {
         s = go('outside'),
         e = function ()
-                if flags.foundsecret > 0 then
-                    if (flags.foundsecret == 1) then
+                if gamestate.foundsecret > 0 then
+                    if (gamestate.foundsecret == 1) then
                         say "You found the secret!"
-                        flags.foundsecret = 2
+                        gamestate.foundsecret = 2
                     end
                     return rooms.secret
                 else
                     print "You can't go that way... yet."
-                    flags.foundsecret = 1
+                    gamestate.foundsecret = 1
                 end
             end,
         n = "This cave isn't very deep, sorry."
@@ -54,9 +54,9 @@ ifluant.room('secret', {
     desc = "Oh man, this is totally the secret room!  You must be some kind of spelunking genius!",
     dirs = {
         w = function ()
-                if (not flags.leftsecret) then 
+                if (not gamestate.leftsecret) then 
                     say "Well, I mean, if you really wanna leave this awesome secret area..."
-                    flags.leftsecret = true
+                    gamestate.leftsecret = true
                 end
                 return rooms.inside
             end,

@@ -12,9 +12,7 @@ require 'rooms'         -- Defines the rooms in your game
 -- Initialize engine
 
 -- Set up some flags for game logic
-flags = {
-    foundsecret = 0
-}
+gamestate.foundsecret = 0
 
 -- Set the player's initial location
 player.moveTo(rooms.outside)

@@ -28,14 +28,17 @@ function go(room)
     return function() return rooms[room] end
 end
 
+-- Say something before normal operations, then continue
 function flavor(text)
     return function() say(text) end
 end
 
+-- Describe what's happening, then let the action happen
 function describe(text)
     return function() print(text) return false, true end
 end
 
+-- Only show or do something and then stop
 function perform(o)
     return function()
         if type(o) == 'string' then
