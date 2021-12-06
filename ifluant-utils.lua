@@ -53,7 +53,7 @@ function player.moveTo(_room)
 end
 
 function giveItem(item, target)
-    table.insert(target.holding, items[item])
+    table.insert(target.holding, item)
 end
 
 function moveItem(item, source, target)
@@ -61,9 +61,6 @@ function moveItem(item, source, target)
     for i,v in pairs(source.holding) do
         if (v == item) then
             source.holding[i] = nil
-            if not target.holding then
-                target.holding = {}
-            end
             table.insert(target.holding, item)
             moved = true
         end
@@ -85,7 +82,7 @@ function showRoomContents(room)
     if (room.holding and #room.holding > 0) then
         print("\nYou see:")
         for i,v in pairs(room.holding) do
-            print("   "..article(v).." " .. v.name)
+            print("   "..article(items[v]).." " .. items[v].name)
         end
     end
 end

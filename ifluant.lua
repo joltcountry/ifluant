@@ -28,7 +28,8 @@ function Ifluant:new()
             table.insert(tokens, token)
         end
         -- verb, adj, obj, xadj, xobj
-        return tokens[1], nil, tokens[2], nil, nil
+        local obj = findObject(tokens[2])
+        return tokens[1], obj
     end
 
     local self = {}
@@ -68,11 +69,29 @@ function Ifluant:new()
 
             line = io.read()
             
-            local verb, adj, obj, xadj, xobj = parse(line)
+            local verb, obj = parse(line)
 
             if not verb then
                 print('Say what now?')
                 goto continue
+            end
+
+            if obj then
+                local item
+                for i,v in pairs(player.holding) do
+                    if obj == v then
+                        item = v
+                    end
+                end
+                for i,v in pairs(player.room.holding) do
+                    if obj == v then
+                        item = v
+                    end
+                end
+                if not item then
+                    print("You don't see that here.")
+                    goto continue
+                end
             end
 
             local recognized = false
@@ -91,17 +110,14 @@ function Ifluant:new()
                 
                 if recognized then
                     -- run hook on anything present
-                    local shortcut = false
-                    local overrideText = false
-                    
-                    local objKey = findObject(obj)
+                    local hook
 
-                    if (objKey and items[objKey].actions[i]) then
-                        shortcut, overrideText = items[objKey].actions[i](adj, obj, xadj, xobj)
+                    if (obj and items[obj].actions[i]) then
+                        hook = items[obj].actions[i]
                     end
 
                     if not shortcut then
-                        v.handler(i, adj, obj, xadj, xobj, overrideText)
+                        v.handler(i, obj, hook)
                     end
 
                     break

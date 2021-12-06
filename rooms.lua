@@ -21,7 +21,7 @@ ifluant.room('outside', {
         w = "This is really more of a north/south kinda game."
     },
     holding = {
-        items['lantern']
+        'lantern'
     }
 })
 
@@ -45,7 +45,7 @@ ifluant.room('inside', {
         n = "This cave isn't very deep, sorry."
     },
     holding = {
-        items['rock']
+        'rock'
     }
 })
 
