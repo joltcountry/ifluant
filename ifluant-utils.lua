@@ -80,16 +80,41 @@ function findObject(obj)
         end
     end
 end
-            
-function showRoomContents(room)
-    if (room.holding and #room.holding > 0) then
-        print("\nYou see:")
+     
+function isLit(room)
+    local isLit = room.lighted
+    if not isLit then
         for i,v in pairs(room.holding) do
-            print("   "..article(items[v]).." " .. items[v].name)
+            if items[v].giveslight then
+                isLit = true
+                break
+            end
+        end
+        for i,v in pairs(player.holding) do
+            if items[v].giveslight then
+                isLit = true
+                break
+            end
+        end
+    end
+    return isLit
+end
+
+function showRoomContents(room)
+    if isLit(room) then 
+        if (room.holding and #room.holding > 0) then
+            print("\nYou see:")
+            for i,v in pairs(room.holding) do
+                print("   "..article(items[v]).." " .. items[v].name)
+            end
         end
     end
 end
 
 function showRoom(room)
-    print(room.desc)
+    if isLit(room) then
+        print(room.desc)
+    else
+        print("It is too dark to see.")
+    end
 end

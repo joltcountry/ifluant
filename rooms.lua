@@ -22,7 +22,8 @@ ifluant.room('outside', {
     },
     holding = {
         'lantern'
-    }
+    },
+    lighted = true
 })
 
 ifluant.room('inside', {
@@ -46,7 +47,8 @@ ifluant.room('inside', {
     },
     holding = {
         'rock'
-    }
+    },
+    lighted = false
 })
 
 ifluant.room('secret', {

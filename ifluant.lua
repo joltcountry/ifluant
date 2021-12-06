@@ -44,7 +44,6 @@ function Ifluant:new()
     function self.room(k, v)
 
         v.actions = v.actions or {}
-        v.lighted = true
         v.holding = v.holding or {}
         rooms[k] = v
     
@@ -59,7 +58,9 @@ function Ifluant:new()
                 print(bold(player.room.shortdesc))
                 if not player.room.seen then
                     showRoom(player.room)
-                    player.room.seen = true
+                    if isLit(player.room) then
+                        player.room.seen = true
+                    end
                 end
                 showRoomContents(player.room)
                 player.moved = false
@@ -116,9 +117,7 @@ function Ifluant:new()
                         hook = items[obj].actions[i]
                     end
 
-                    if not shortcut then
-                        v.handler(i, obj, hook)
-                    end
+                    v.handler(i, obj, hook)
 
                     break
                 end

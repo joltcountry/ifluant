@@ -5,7 +5,8 @@ ifluant.item('lantern', {
     desc = "A well-worn copper lantern, just ripe for lighting and carrying, once I implement that.",
     actions = {
         drop = describe("Though you sense it's against your better judgment, you drop the damn lantern.")
-    }
+    },
+    giveslight = true
 })
 
 ifluant.item('authornote', {
