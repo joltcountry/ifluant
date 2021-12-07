@@ -82,21 +82,25 @@ function initVerbs()
                 end
                 for i,v in pairs(player.room.holding) do
                     if obj == v then
-                        local halt, overrideText
-                        if hook then
-                            halt, overrideText = hook()
-                        end
+                        if items[v].fixed then
+                            print("That's not something you can pick up.")
+                            return
+                        else
+                            local halt, overrideText
+                            if hook then
+                                halt, overrideText = hook(items[v])
+                            end
 
-                        if halt then return end
+                            if halt then return end
 
-                        if (not overrideText) then
-                            print('You pick up the '..items[v].name..'.')
+                            if (not overrideText) then
+                                print('You pick up the '..items[v].name..'.')
+                            end
+                            moveItem(v, player.room, player)
+                            return
                         end
-                        moveItem(v, player.room, player)
-                        return
                     end
                 end
-                print("You don't see any " .. obj .. " here.")
             end
         },
         drop = {
@@ -109,7 +113,7 @@ function initVerbs()
                     if (obj == v) then
                         local halt, overrideText
                         if hook then
-                            halt, overrideText = hook()
+                            halt, overrideText = hook(items[v])
                         end
                         if halt then return end
                         if (not overrideText) then
@@ -119,7 +123,7 @@ function initVerbs()
                         return
                     end
                 end
-                print("You're not carrying any " .. obj .. ".")
+                print("You're not carrying that.")
             end
         },
         examine = {
@@ -141,22 +145,49 @@ function initVerbs()
                     end
                 end
                 if item then
-                    if items[item].desc then
+                    if (type(items[item].desc) == 'string') then
                         print(items[item].desc)
+                    elseif (type(items[item].desc) == 'function') then
+                        items[item].desc(items[item])
                     else
                         print("It's just a regular old " .. items[item].name .. ".")
                     end
-                else
-                    print("You don't see any " .. items[obj].name .. " here.")
                 end
             end
         },
         read = {
             handler = function(verb, obj, hook)
                 if hook then
-                    hook()
+                    hook(items[obj])
                 else
                     print("You can't read that.")
+                end
+            end
+        },
+        open = {
+            handler = function(verb, obj, hook)
+                if hook then
+                    hook(items[obj])
+                else
+                    print("You can't open that.")
+                end
+            end
+        },
+        close = {
+            handler = function(verb, obj, hook)
+                if hook then
+                    hook(items[obj])
+                else
+                    print("You can't close that.")
+                end
+            end
+        },
+        light = {
+            handler = function(verb, obj, hook)
+                if hook then
+                    hook(items[obj])
+                else
+                    print("You can't light that.")
                 end
             end
         }

@@ -12,16 +12,41 @@
 --
 -- More to come!
 
+ifluant.room('office', {
+    shortdesc = "In your office",
+    desc = [[ This is your office.  It's practically your office.  Why you decided to put your office right next to a cave opening, only you know!  You can hang out here or go back to the cave to the east. ]],
+    dirs = {
+        e = function()
+            if (items['mydoor'].open) then
+                return rooms.outside
+            else
+                print "A large wooden door blocks your way."
+            end
+        end
+    },
+    lighted = true,
+    holding = {
+        'mydoor'
+    }
+})
+
 ifluant.room('outside', {
     shortdesc = "Outside the cave",
-    desc = "You stand outside the entrance to a cave, which leads down to the north.  What's in there, and how far down it goes, nobody knows.",
+    desc = [[ You stand outside the entrance to a cave, which leads down to the north.  What's in there, and how far down it goes, nobody knows.  The door to your office lies west. ]],
     dirs = {
         n = go('inside'),
         e = "This is really more of a north/south kinda game.",
-        w = "This is really more of a north/south kinda game."
+        w = function()
+            if (items['mydoor'].open) then
+                return rooms.office
+            else
+                print "A large wooden door blocks your way."
+            end
+        end
     },
     holding = {
-        'lantern'
+        'lantern',
+        'mydoor'
     },
     lighted = true
 })

@@ -102,10 +102,16 @@ end
 
 function showRoomContents(room)
     if isLit(room) then 
-        if (room.holding and #room.holding > 0) then
-            print("\nYou see:")
+        if (room.holding) then
+            local started
             for i,v in pairs(room.holding) do
-                print("   "..article(items[v]).." " .. items[v].name)
+                if not items[v].hidden then 
+                    if not started then
+                        print("\nYou see:")
+                        started = true
+                    end
+                    print("   "..article(items[v]).." " .. items[v].name)
+                end
             end
         end
     end
@@ -113,7 +119,11 @@ end
 
 function showRoom(room)
     if isLit(room) then
-        print(room.desc)
+        if (type(room.desc) == 'string') then
+            print(room.desc)
+        elseif (type(room.desc) == 'function') then
+            room.desc()
+        end
     else
         print("It is too dark to see.")
     end
