@@ -24,7 +24,7 @@ print ""
 print "This is an exciting, fun adventure for the whole family."
 print "(Written in ifluant v0.0000001 by Ben Parrish, Copyright (c) 2021 Jolt Country Games)"
 print ""
-say "Commands: n, e, w, s, l, q to quit"
+say "Commands: n, e, w, s, l, x/example, get, drop, light, open, close, q to quit"
 
 -- Run the whole goddamn game
 ifluant.run();
