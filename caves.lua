@@ -2,7 +2,7 @@
 --
 -- Arguably the greatest, most scintillating three-room cave exploration game ever written in Lua
 
-require 'ifluant'       -- Loads the game engine (required as first line)
+require 'ifluant.ifluant'       -- Loads the game engine (required as first line)
 
 ifluant = Ifluant:new()
 

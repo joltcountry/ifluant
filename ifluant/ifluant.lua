@@ -15,8 +15,8 @@ gamestate = {
 rooms = {}
 items = {}
 
-require 'ifluant-utils'
-require 'verbs'
+require 'ifluant.ifluant-utils'
+require 'ifluant.verbs'
 
 function Ifluant:new()
 
