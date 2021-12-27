@@ -16,9 +16,10 @@ print = function (s) sheet:print(s) end
 
 -- Initialize engine
 function love.load()
-    love.window.setMode(600, 600)
-    sheet = Sheet:new(0, 0, 600, 24)
-    console = Console:new(10, 560, 500, '>')
+    love.window.setMode(500, 600)
+    background = love.graphics.newImage('cavesmall.jpg')
+    sheet = Sheet:new(0, 0, 500, 24)
+    console = Console:new(10, 560, 450, '>')
     -- Introductory text and stuff
     sheet:print("Welcome to the Lua Caves!")
     sheet:print("")
@@ -35,6 +36,8 @@ function love.load()
 end
 
 function love.draw()
+    love.graphics.setColor(.5, .5, .5)
+    love.graphics.draw(background)
     sheet:draw()
     console:draw()
 end
